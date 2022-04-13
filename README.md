@@ -1,2 +1,3 @@
 # furry-journey
-Cyberia's test
+
+This repository represents absolute minimal setup for e-library
