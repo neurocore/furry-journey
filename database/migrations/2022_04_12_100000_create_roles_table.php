@@ -28,13 +28,13 @@ class CreateRolesTable extends Migration
                   ->references('id')
                   ->on('users')
                   ->onUpdate('cascade')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
 
             $table->foreign('role_id')
                   ->references('id')
                   ->on('roles')
                   ->onUpdate('cascade')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
         });
     }
 
