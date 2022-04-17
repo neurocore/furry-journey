@@ -1,4 +1,4 @@
-@extends('users.layout')
+@extends('layouts.crud')
    
 @section('content')
 <div class="row">
