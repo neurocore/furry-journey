@@ -21,7 +21,7 @@
 <table class="table table-bordered">
     <tr>
         <th>#</th>
-        <th>Имя</th>
+        <th>Название</th>
         <th width="400px">Действия</th>
     </tr>
     @foreach ($data as $key => $value)
