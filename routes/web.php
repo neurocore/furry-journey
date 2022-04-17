@@ -20,3 +20,4 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', UserController::class);
+Route::resource('genres', GenreController::class);

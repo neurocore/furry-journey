@@ -28,13 +28,13 @@ class CreateGenresTable extends Migration
                   ->references('id')
                   ->on('books')
                   ->onUpdate('cascade')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
 
             $table->foreign('genre_id')
                   ->references('id')
                   ->on('genres')
                   ->onUpdate('cascade')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
         });
     }
 
