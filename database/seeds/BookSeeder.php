@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class BookSeeder extends Seeder
 {
@@ -12,7 +11,6 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        $date = date('Y-m-d H:i:s');
         $user_ids = DB::table('users')->pluck('id', 'name');
         $genre_ids = DB::table('genres')->pluck('id', 'name');
 
@@ -27,7 +25,6 @@ class BookSeeder extends Seeder
         ];
 
         foreach ($books as $book) {
-            Log::info(print_r($book, true));
 
             // 1. Adding books into table
 
@@ -35,8 +32,8 @@ class BookSeeder extends Seeder
                 'name' => $book[0],
                 'author_id' => $user_ids[ $book[1] ],
                 'year' => $book[3],
-                'created_at' => $date,
-                'updated_at' => $date,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
             // 2. Building relations between books and genres
@@ -44,8 +41,8 @@ class BookSeeder extends Seeder
             DB::table('book_genres')->insert([
                 'book_id' => $id,
                 'genre_id' => $genre_ids[ $book[2] ],
-                'created_at' => $date,
-                'updated_at' => $date,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
         }
     }

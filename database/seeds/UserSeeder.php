@@ -11,9 +11,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $date = date('Y-m-d H:i:s');
         $password = Hash::make('12345678');
         $users = [
+            [
+                'name' => 'Админ',
+                'email' => 'admin@gmail.com',
+                'roles' => ['admin'],
+            ],
             [
                 'name' => 'Эдгар Аллан По',
                 'email' => 'EdAlPo@gmail.com',
@@ -58,8 +62,8 @@ class UserSeeder extends Seeder
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'password' => $password,
-                'created_at' => $date,
-                'updated_at' => $date,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
         }
 
@@ -75,8 +79,8 @@ class UserSeeder extends Seeder
                 DB::table('user_role')->insert([
                     'user_id' => $user_ids[ $user['name'] ],
                     'role_id' => $role_ids[ $role ],
-                    'created_at' => $date,
-                    'updated_at' => $date,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             }
         }
