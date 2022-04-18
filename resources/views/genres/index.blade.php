@@ -3,8 +3,8 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">
-            <h2>Авторы</h2>
         <div class="float-left">
+            <h2>Жанры</h2>
         </div>
         <div class="float-right">
             <a class="btn btn-success" href="{{ route('genres.create') }}">Создать новый жанр</a>
