@@ -72,9 +72,29 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="main-page">
+            <div class="container">
+                <div class="row">
+                    <div class="main-side col-xs-2 col-sm-2 col-md-2">
+                        @include('layouts.side')
+                    </div>
+                    <div class="main-content col-xs-10 col-sm-10 col-md-10">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
+
+<style>
+    .main-page {
+        margin-top: 40px;
+    }
+
+    .main-side, .main-content {
+        padding: 20px 30px;
+    }
+</style>
