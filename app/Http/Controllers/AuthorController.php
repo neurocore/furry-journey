@@ -16,7 +16,11 @@ class AuthorController extends Controller
      */
     public function users()
     {
-        $data = User::whereHas('roles', function($q) { $q->where('name', 'author'); })->get();
+        $data = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
+             ->withCount(['books'])
+             ->get();
+
+        // dd($data);
 
         return view('author.users', compact('data'))->with('i', 0);
     }

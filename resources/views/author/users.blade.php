@@ -19,12 +19,14 @@
     <tr>
         <th>#</th>
         <th>Имя</th>
+        <th>Книг</th>
         <th>Почта</th>
     </tr>
     @foreach ($data as $key => $value)
     <tr>
         <td>{{ ++$i }}</td>
         <td>{{ $value->name }}</td>
+        <td>{{ $value->books_count }}</td>
         <td>{{ $value->email }}</td>
     </tr>
     @endforeach

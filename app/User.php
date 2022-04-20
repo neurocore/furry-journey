@@ -53,4 +53,12 @@ class User extends Authenticatable
         $roles = $this->roles->pluck('id', 'name');
         return isset($roles[$role]);
     }
+
+    /**
+     * The books that belong to the user.
+     */
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'author_id');
+    }
 }

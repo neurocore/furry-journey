@@ -23,4 +23,12 @@ class Book extends Model
     protected $hidden = [
         'remember_token',
     ];
+
+    /**
+     * The author of the book.
+     */
+    public function users()
+    {
+        return $this->belongsTo(Users::class, 'author_id');
+    }
 }
