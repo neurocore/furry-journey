@@ -27,6 +27,7 @@
     @csrf
   
      <div class="row">
+
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Название:</strong>
@@ -39,6 +40,7 @@
                 <input type="text" name="year" class="form-control" placeholder="Год издания">
             </div>
         </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Автор:</strong>
@@ -49,6 +51,29 @@
                 </select>
             </div>
         </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Жанры:</strong>
+                <div class="input-group mb-3">
+
+                    @foreach ($genres as $key => $value)
+                    <div class="custom-control custom-checkbox col-12">
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               value="{{ $key }}"
+                               name="genre_id[]"
+                               id="genre_id_{{ $key }}"
+                               >
+                        <label class="custom-control-label"
+                               for="genre_id_{{ $key }}">{{ $value }}</label>
+                    </div>
+                    @endforeach
+
+                </div>
+            </div>
+        </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <button type="submit" class="btn btn-primary">Подтвердить</button>
         </div>

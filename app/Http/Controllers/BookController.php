@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Genre;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,11 +18,9 @@ class BookController extends Controller
     public function index()
     {
         $page = request()->input('page', 1);
-        $data = Book::paginate(5);
-        $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
-                ->get()->pluck('name', 'id');
+        $data = Book::with(['authors', 'genres'])->paginate(5);
     
-        return view('books.index', compact('data'), compact('authors'))
+        return view('books.index', compact('data'))
              ->with('i', ($page - 1) * 5);
     }
 
@@ -34,7 +33,8 @@ class BookController extends Controller
     {
         $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
                 ->get()->pluck('name', 'id');
-        return view('books.create', compact('authors'));
+        $genres = Genre::get()->pluck('name', 'id');
+        return view('books.create', compact('authors'), compact('genres'));
     }
 
     /**
@@ -52,6 +52,9 @@ class BookController extends Controller
         ]);
 
         $book = Book::Create($request->all());
+        $genre_id = $request->input('genre_id');
+        $book->genres()->detach();
+        $book->genres()->attach($genre_id);
      
         return redirect()->route('books.index')
                          ->with('success', 'Книга успешно добавлена');
@@ -80,7 +83,21 @@ class BookController extends Controller
     {
         $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
                 ->get()->pluck('name', 'id');
-        return view('books.edit', compact('book'), compact('authors'));
+
+        $book_genres = $book->genres->pluck('name', 'id');
+        $genres = Genre::get()
+               ->pluck('name', 'id')
+               ->map(function ($item, $key) use ($book_genres) {
+                    return [
+                        'name' => $item,
+                        'checked' => isset($book_genres[$key]),
+                    ];
+        });
+
+        return view('books.edit')
+             ->with(compact('book'))
+             ->with(compact('genres'))
+             ->with(compact('authors'));
     }
 
     /**
@@ -99,6 +116,10 @@ class BookController extends Controller
         ]);
     
         $book->update($request->all());
+
+        $genre_id = $request->input('genre_id');
+        $book->genres()->detach();
+        $book->genres()->attach($genre_id);
     
         return redirect()->route('books.index')
                          ->with('success', 'Книга успешно обновлена');

@@ -28,7 +28,17 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Автор:</strong>
-            {{ $authors[ $book->author_id ] }}
+            {{ $book->authors->name }}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Жанры:</strong>
+            <ul>
+                @foreach ($book->genres as $genre)
+                    <li>{{ $genre->name }}</li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>

@@ -24,6 +24,7 @@
         <th>Название</th>
         <th>Год издания</th>
         <th>Автор</th>
+        <th>Жанры</th>
         <th width="400px">Действия</th>
     </tr>
     @foreach ($data as $key => $value)
@@ -31,7 +32,14 @@
         <td>{{ ++$i }}</td>
         <td>{{ $value->name }}</td>
         <td>{{ $value->year }}</td>
-        <td>{{ $authors[ $value->author_id ] }}</td>
+        <td>{{ $value->authors->name }}</td>
+        <td>
+            <ul>
+                @foreach ($value->genres as $genre)
+                    <li>{{ $genre->name }}</li>
+                @endforeach
+            </ul>
+        </td>
         <td>
             <form action="{{ route('books.destroy', $value->id) }}" method="POST">   
                 <a class="btn btn-info" href="{{ route('books.show', $value->id) }}">Показать</a>    
