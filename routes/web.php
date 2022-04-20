@@ -15,6 +15,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::resource('users', UserController::class);
-Route::resource('genres', GenreController::class);
-Route::resource('books', BookController::class);
+Route::middleware('role:admin')->group(function() {
+    Route::resource('users', UserController::class);
+    Route::resource('genres', GenreController::class);
+    Route::resource('books', BookController::class);
+});
