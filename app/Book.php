@@ -27,8 +27,16 @@ class Book extends Model
     /**
      * The author of the book.
      */
-    public function users()
+    public function authors()
     {
-        return $this->belongsTo(Users::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * The genre of the book.
+     */
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'book_genres', 'book_id', 'genre_id');
     }
 }

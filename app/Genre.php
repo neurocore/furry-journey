@@ -23,4 +23,12 @@ class Genre extends Model
     protected $hidden = [
         'remember_token',
     ];
+
+    /**
+     * The books of the genre.
+     */
+    public function books()
+    {
+        return $this->belongsToMany(Genre::class, 'book_genres', 'genre_id', 'book_id');
+    }
 }

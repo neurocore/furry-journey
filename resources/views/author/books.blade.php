@@ -21,13 +21,21 @@
         <th>Название</th>
         <th>Год издания</th>
         <th>Автор</th>
+        <th>Жанры</th>
     </tr>
     @foreach ($data as $key => $value)
     <tr>
         <td>{{ ++$i }}</td>
         <td>{{ $value->name }}</td>
         <td>{{ $value->year }}</td>
-        <td>{{ $authors[ $value->author_id ] }}</td>
+        <td>{{ $value->authors->name }}</td>
+        <td>
+            <ul>
+                @foreach ($value->genres as $genre)
+                    <li>{{ $genre->name }}</li>
+                @endforeach
+            </ul>
+        </td>
     </tr>
     @endforeach
 </table>

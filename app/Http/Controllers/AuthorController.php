@@ -20,8 +20,6 @@ class AuthorController extends Controller
              ->withCount(['books'])
              ->get();
 
-        // dd($data);
-
         return view('author.users', compact('data'))->with('i', 0);
     }
 
@@ -44,10 +42,8 @@ class AuthorController extends Controller
      */
     public function books()
     {
-        $data = Book::get();
-        $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
-                ->get()->pluck('name', 'id');
+        $data = Book::with(['authors', 'genres'])->get();
     
-        return view('author.books', compact('data'), compact('authors'))->with('i', 0);
+        return view('author.books', compact('data'))->with('i', 0);
     }
 }
