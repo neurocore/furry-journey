@@ -44,4 +44,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
     }
+
+    /**
+     * Has user this role.
+     */
+    public function hasRole($role)
+    {
+        $roles = $this->roles->pluck('id', 'name');
+        return isset($roles[$role]);
+    }
 }

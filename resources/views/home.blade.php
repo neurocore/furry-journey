@@ -4,6 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
+            @if (Auth::user()->hasRole('admin'))
+
             <div class="card">
                 <div class="card-header">Административная панель</div>
 
@@ -17,6 +20,25 @@
                     Вы успешно зашли!
                 </div>
             </div>
+
+            @else
+
+            <div class="card">
+                <div class="card-header">Панель автора</div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    Вы успешно зашли!
+                </div>
+            </div>
+
+            @endif
+            
         </div>
     </div>
 </div>

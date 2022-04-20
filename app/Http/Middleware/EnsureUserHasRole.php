@@ -22,9 +22,7 @@ class EnsureUserHasRole
             return redirect(RouteServiceProvider::HOME);
         }
 
-        $roles = $request->user()->roles->pluck('id', 'name');
-
-        if (!isset($roles[$role])) {
+        if (!$request->user()->hasRole($role)) {
             return redirect(RouteServiceProvider::HOME);
         }
 
