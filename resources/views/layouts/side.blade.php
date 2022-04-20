@@ -1,3 +1,5 @@
+@auth
+
 @if (Auth::user()->hasRole('admin'))
 
 <div class="row">
@@ -28,3 +30,4 @@
 
 @endif
 
+@endauth
