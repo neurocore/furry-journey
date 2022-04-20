@@ -18,6 +18,7 @@ class UserController extends Controller
     {
         $page = request()->input('page', 1);
         $data = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
+             ->withCount(['books'])
              ->paginate(5);
     
         return view('users.index', compact('data'))

@@ -22,6 +22,7 @@
     <tr>
         <th>#</th>
         <th>Имя</th>
+        <th>Книг</th>
         <th>Почта</th>
         <th width="400px">Действия</th>
     </tr>
@@ -29,6 +30,7 @@
     <tr>
         <td>{{ ++$i }}</td>
         <td>{{ $value->name }}</td>
+        <td>{{ $value->books_count }}</td>
         <td>{{ $value->email }}</td>
         <td>
             <form action="{{ route('users.destroy', $value->id) }}" method="POST">   
