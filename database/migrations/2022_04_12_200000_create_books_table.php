@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
                   ->references('id')
                   ->on('users')
                   ->onUpdate('cascade')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
         });
     }
 

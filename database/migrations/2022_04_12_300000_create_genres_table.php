@@ -18,24 +18,6 @@ class CreateGenresTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
-
-        Schema::create('book_genres', function (Blueprint $table) {
-            $table->unsignedBigInteger('book_id');
-            $table->unsignedBigInteger('genre_id');
-            $table->timestamps();
-
-            $table->foreign('book_id')
-                  ->references('id')
-                  ->on('books')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-
-            $table->foreign('genre_id')
-                  ->references('id')
-                  ->on('genres')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-        });
     }
 
     /**
@@ -45,7 +27,6 @@ class CreateGenresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_genres');
         Schema::dropIfExists('genres');
     }
 }
