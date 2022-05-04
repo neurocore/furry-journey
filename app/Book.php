@@ -27,7 +27,7 @@ class Book extends Model
     /**
      * The author of the book.
      */
-    public function authors()
+    public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }

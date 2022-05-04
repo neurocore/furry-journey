@@ -32,7 +32,7 @@
         <td>{{ ++$i }}</td>
         <td>{{ $value->name }}</td>
         <td>{{ $value->year }}</td>
-        <td>{{ $value->authors->name }}</td>
+        <td>{{ $value->author->name }}</td>
         <td>
             <ul>
                 @foreach ($value->genres as $genre)

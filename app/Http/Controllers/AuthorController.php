@@ -42,7 +42,7 @@ class AuthorController extends Controller
      */
     public function books()
     {
-        $data = Book::with(['authors', 'genres'])->get();
+        $data = Book::with(['author', 'genres'])->get();
     
         return view('author.books', compact('data'))->with('i', 0);
     }

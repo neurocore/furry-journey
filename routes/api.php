@@ -21,10 +21,10 @@ use App\Http\Controllers\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// + 3b) Getting books by authors name
+// + 3b) Getting books with author names
 
 Route::get('/books', function(Request $request) {
-    return Book::with(['authors'])->get();
+    return Book::with(['author'])->get();
 });
 
 // + 3c) Getting book by id
