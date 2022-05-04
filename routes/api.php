@@ -3,6 +3,7 @@
 use App\User;
 use App\Book;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,47 +16,31 @@ use Illuminate\Http\Request;
 |
 */
 
-// (-) 3.1. User authorization request
+// + 3a) User authorization request
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-
-// (+) 3.2. Getting books by author
+// + 3b) Getting books by authors name
 
 Route::get('/books', function(Request $request) {
     return Book::with(['authors'])->get();
 });
 
-// (+) 3.3. Getting book by id
+// + 3c) Getting book by id
 
 Route::get('/books/{id}', function($id) {
     return Book::findOrFail($id);
 });
 
-// (-) 3.4. Updating book by id ------------------- [auth required]
-
-Route::put('/books/{id}', function(Request $request, $id) {
-    $book = Book::findOrFail($id);
-    $book->update($request->all());
-
-    return $book;
-});
-
-// (-) 3.5. Deleting book by id ------------------- [auth required]
-
-Route::delete('/books/{id}', function($id) {
-    Book::findOrFail($id)->delete();
-
-    return 204;
-});
-
-// (+) 3.6. Getting authors list with books count
+// + 3f) Getting authors list with books count
 
 Route::get('/authors', function() {
     return User::whereHas('roles', function($q) { $q->where('name', 'author'); })
              ->withCount(['books'])->get();
 });
 
-// (+) 3.7. Getting author info with books list
+// + 3g) Getting author info with books list
 
 Route::get('/authors/{id}', function($id) {
     $user = User::findOrFail($id);
@@ -65,11 +50,32 @@ Route::get('/authors/{id}', function($id) {
          : App::abort(404);
 });
 
-// (-) 3.8. Updating author info ------------------ [auth required]
 
-Route::put('/books/{id}', function(Request $request, $id) {
-    $user = User::findOrFail($id);
-    $user->update($request->all());
+Route::middleware('auth:sanctum')->group(function () {
 
-    return $user;
+    // + 3h) Updating author info
+
+    Route::put('/authors/{id}', function(Request $request, $id) {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return $user;
+    });
+
+    // + 3d) Updating book by id
+
+    Route::put('/books/{id}', function(Request $request, $id) {
+        $book = Book::findOrFail($id);
+        $book->update($request->all());
+
+        return $book;
+    });
+
+    // + 3e) Deleting book by id
+
+    Route::delete('/books/{id}', function($id) {
+        // Book::findOrFail($id)->delete();
+
+        return 204;
+    });
 });
