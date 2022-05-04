@@ -74,8 +74,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // + 3e) Deleting book by id
 
     Route::delete('/books/{id}', function($id) {
-        // Book::findOrFail($id)->delete();
+        Book::findOrFail($id)->delete();
 
-        return 204;
+        return App::abort(204);
     });
 });
