@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -11,7 +13,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $password = Hash::make('12345678');
         $users = [
             [
                 'name' => 'Админ',
@@ -55,34 +56,26 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        // 1. Adding users into table
-
-        foreach ($users as $user) {
-            DB::table('users')->insert([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'password' => $password,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-        }
-
-        // 2. Gathering ids of users and roles
-
-        $user_ids = DB::table('users')->pluck('id', 'name');
+        $now = Carbon::now();
         $role_ids = DB::table('roles')->pluck('id', 'name');
 
-        // 3. Adding relations between users and roles
-
         foreach ($users as $user) {
+
+            // 1. Adding users into table
+
+            $user_simple = $user;
+            $user_simple['password'] = Hash::make('12345678');
+            unset($user_simple['roles']);
+            $user_saved = User::create($user_simple);
+
+            // 2. Adding relations between users and roles
+
+            $roles = [];
             foreach ($user['roles'] as $role) {
-                DB::table('user_role')->insert([
-                    'user_id' => $user_ids[ $user['name'] ],
-                    'role_id' => $role_ids[ $role ],
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                $id = $role_ids[$role];
+                $roles[$id] = ['created_at' => $now, 'updated_at' => $now];
             }
+            $user_saved->roles()->attach($roles);
         }
     }
 }

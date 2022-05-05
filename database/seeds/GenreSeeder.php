@@ -1,5 +1,7 @@
 <?php
 
+use App\Genre;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class GenreSeeder extends Seeder
@@ -11,28 +13,12 @@ class GenreSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('genres')->insert([
-            'name' => 'Детектив',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-
-        DB::table('genres')->insert([
-            'name' => 'Фантастика',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-
-        DB::table('genres')->insert([
-            'name' => 'Роман',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-
-        DB::table('genres')->insert([
-            'name' => 'Приключения',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+        $now = Carbon::now();
+        Genre::insert([
+            [ 'created_at' => $now, 'updated_at' => $now, 'name' => 'Детектив' ],
+            [ 'created_at' => $now, 'updated_at' => $now, 'name' => 'Фантастика' ],
+            [ 'created_at' => $now, 'updated_at' => $now, 'name' => 'Роман' ],
+            [ 'created_at' => $now, 'updated_at' => $now, 'name' => 'Приключения' ],
         ]);
     }
 }

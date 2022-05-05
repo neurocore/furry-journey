@@ -1,5 +1,7 @@
 <?php
 
+use App\Book;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -14,7 +16,7 @@ class BookSeeder extends Seeder
         $user_ids = DB::table('users')->pluck('id', 'name');
         $genre_ids = DB::table('genres')->pluck('id', 'name');
 
-        $books = [
+        $books_flat = [
             ['Убийство на улице Морг', 'Эдгар Аллан По', ['Детектив'], 1841],
             ['Рассказы о Шерлоке Холмсе', 'Артур Конан Дойл', ['Детектив', 'Приключения'], 1887],
             ['Основание', 'Айзек Азимов', ['Фантастика'], 1966],
@@ -27,28 +29,33 @@ class BookSeeder extends Seeder
             ['Железный король', 'Морис Дрюон', ['Роман'], 1955],
         ];
 
+        $books = collect($books_flat)->map(function($book) use ($user_ids, $genre_ids) {
+            $now = Carbon::now();
+            $genres = [];
+            foreach ($book[2] as $genre) {
+                $id = $genre_ids[$genre];
+                $genres[$id] = ['created_at' => $now, 'updated_at' => $now];
+            }
+
+            return [
+                'name' => $book[0],
+                'author_id' => $user_ids[ $book[1] ],
+                'year' => $book[3],
+                'genres' => $genres,
+            ];
+        })->toArray();
+
         foreach ($books as $book) {
 
             // 1. Adding books into table
 
-            $id = DB::table('books')->insertGetId([
-                'name' => $book[0],
-                'author_id' => $user_ids[ $book[1] ],
-                'year' => $book[3],
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+            $book_simple = $book;
+            unset($book_simple['genres']);
+            $book_saved = Book::create($book_simple);
 
             // 2. Building relations between books and genres
-            
-            foreach ($book[2] as $genre) {
-                DB::table('book_genres')->insert([
-                    'book_id' => $id,
-                    'genre_id' => $genre_ids[ $genre ],
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-            }
+
+            $book_saved->genres()->attach($book['genres']);
         }
     }
 }
