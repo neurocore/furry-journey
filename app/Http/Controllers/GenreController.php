@@ -46,7 +46,7 @@ class GenreController extends Controller
         $genre = Genre::Create($request->all());
      
         return redirect()->route('genres.index')
-                         ->with('success', 'Жанр успешно добавлен');
+                         ->with('message', 'Жанр успешно добавлен');
     }
 
     /**
@@ -87,7 +87,7 @@ class GenreController extends Controller
         $genre->update($request->all());
     
         return redirect()->route('genres.index')
-                         ->with('success', 'Жанр успешно обновлён');
+                         ->with('message', 'Жанр успешно обновлён');
     }
 
     /**
@@ -101,6 +101,6 @@ class GenreController extends Controller
         $genre->delete();
     
         return redirect()->route('genres.index')
-                         ->with('success', 'Жанр успешно удалён');
+                         ->with('message', 'Жанр успешно удалён');
     }
 }

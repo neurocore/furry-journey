@@ -11,11 +11,7 @@
                 <div class="card-header">Административная панель</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    @include('layouts.alert')
 
                     Вы успешно зашли!
                 </div>
@@ -27,11 +23,7 @@
                 <div class="card-header">Панель автора</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    @include('layouts.alert')
 
                     Вы успешно зашли!
                 </div>

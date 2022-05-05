@@ -12,16 +12,7 @@
     </div>
 </div>
    
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+@include('layouts.alert')
    
 <form action="{{ route('books.store') }}" method="POST">
     @csrf
@@ -62,11 +53,11 @@
                         <input type="checkbox"
                                class="custom-control-input"
                                value="{{ $key }}"
-                               name="genre_id[]"
-                               id="genre_id_{{ $key }}"
+                               name="genre_ids[]"
+                               id="genre_ids_{{ $key }}"
                                >
                         <label class="custom-control-label"
-                               for="genre_id_{{ $key }}">{{ $value }}</label>
+                               for="genre_ids_{{ $key }}">{{ $value }}</label>
                     </div>
                     @endforeach
 

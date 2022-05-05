@@ -51,13 +51,21 @@ class BookController extends Controller
             'author_id' => ['required'],
         ]);
 
+        $user = User::find($request->input('author_id'));
+        if ($user === null)                    return $this->failure('Пользователя не существует!');
+        if ($user->hasRole('author') === null) return $this->failure('Пользователь не является автором!');
+
+        $genre_ids = $request->input('genre_ids');
+        foreach ($genre_ids as $genre_id)
+            if (Genre::find($genre_id) === null)
+                return $this->failure('Такого жанра не существует!');
+
         $book = Book::Create($request->all());
-        $genre_id = $request->input('genre_id');
+
         $book->genres()->detach();
-        $book->genres()->attach($genre_id);
+        $book->genres()->attach($genre_ids);
      
-        return redirect()->route('books.index')
-                         ->with('success', 'Книга успешно добавлена');
+        return $this->success('Книга успешно добавлена');
     }
 
     /**
@@ -114,15 +122,22 @@ class BookController extends Controller
             'year' => 'required',
             'author_id' => 'required',
         ]);
+
+        $user = User::find($request->input('author_id'));
+        if ($user === null)                    return $this->failure('Пользователя не существует!');
+        if ($user->hasRole('author') === null) return $this->failure('Пользователь не является автором!');
+
+        $genre_ids = $request->input('genre_ids');
+        foreach ($genre_ids as $genre_id)
+            if (Genre::find($genre_id) === null)
+                return $this->failure('Такого жанра не существует!');
     
         $book->update($request->all());
 
-        $genre_id = $request->input('genre_id');
         $book->genres()->detach();
         $book->genres()->attach($genre_id);
     
-        return redirect()->route('books.index')
-                         ->with('success', 'Книга успешно обновлена');
+        return $this->success('Книга успешно обновлена');
     }
 
     /**
@@ -135,7 +150,31 @@ class BookController extends Controller
     {
         $book->delete();
     
+        return $this->success('Книга успешно удалёна');
+    }
+
+    /**
+     * Build successful redirect to index page.
+     * 
+     * @param string $message
+     * @return \Illuminate\Support\Facades\Redirect
+     */
+    private function success(string $message)
+    {
         return redirect()->route('books.index')
-                         ->with('success', 'Книга успешно удалёна');
+                         ->with('message', $message);
+    }
+
+    /**
+     * Build unsuccessful redirect to index page.
+     * 
+     * @param string $message
+     * @return \Illuminate\Support\Facades\Redirect
+     */
+    private function failure(string $message)
+    {
+        return redirect()->route('books.index')
+                         ->with('status', 'danger')
+                         ->with('message', $message);
     }
 }

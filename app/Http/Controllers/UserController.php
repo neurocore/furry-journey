@@ -56,7 +56,7 @@ class UserController extends Controller
         $user->roles()->attach($role);
      
         return redirect()->route('users.index')
-                         ->with('success', 'Автор успешно добавлен');
+                         ->with('message', 'Автор успешно добавлен');
     }
 
     /**
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->update($request->all());
     
         return redirect()->route('users.index')
-                         ->with('success', 'Автор успешно обновлён');
+                         ->with('message', 'Автор успешно обновлён');
     }
 
     /**
@@ -112,6 +112,6 @@ class UserController extends Controller
         $user->delete();
     
         return redirect()->route('users.index')
-                         ->with('success', 'Автор успешно удалён');
+                         ->with('message', 'Автор успешно удалён');
     }
 }
