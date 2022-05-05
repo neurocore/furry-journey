@@ -34,7 +34,10 @@ class BookController extends Controller
         $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
                 ->get()->pluck('name', 'id');
         $genres = Genre::get()->pluck('name', 'id');
-        return view('books.create', compact('authors'), compact('genres'));
+        return view('books.create', compact('authors'), compact('genres'))
+             ->with('book', false)
+             ->with('action', route('books.store'))
+             ->with('title', 'Добавить новую книгу');
     }
 
     /**
@@ -105,7 +108,9 @@ class BookController extends Controller
         return view('books.edit')
              ->with(compact('book'))
              ->with(compact('genres'))
-             ->with(compact('authors'));
+             ->with(compact('authors'))
+             ->with('action', route('books.update', $book->id))
+             ->with('title', 'Редактировать книгу');
     }
 
     /**

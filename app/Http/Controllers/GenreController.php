@@ -28,7 +28,10 @@ class GenreController extends Controller
      */
     public function create()
     {
-        return view('genres.create');
+        return view('genres.edit')
+             ->with('genre', false)
+             ->with('action', route('genres.store'))
+             ->with('title', 'Добавить новый жанр');
     }
 
     /**
@@ -68,7 +71,9 @@ class GenreController extends Controller
      */
     public function edit(Genre $genre)
     {
-        return view('genres.edit', compact('genre'));
+        return view('genres.edit', compact('genre'))
+             ->with('action', route('genres.update', $genre->id))
+             ->with('title', 'Редактировать жанр');
     }
 
     /**

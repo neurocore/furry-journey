@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="float-left">
-            <h2>Редактировать книгу</h2>
+            <h2>{{ $title }}</h2>
         </div>
         <div class="float-right">
             <a class="btn btn-primary" href="{{ route('books.index') }}">Назад</a>
@@ -12,24 +12,26 @@
     </div>
 </div>
 
-@include('layouts.alert')
+@include('layouts.errors')
 
-<form action="{{ route('books.update', $book->id) }}" method="POST">
+<form action="{{ $action }}" method="POST">
     @csrf
-    @method('PUT')
+    @if (!!$book)
+        @method('PUT')
+    @endif
 
     <div class="row">
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Имя:</strong>
-                <input type="text" name="name" value="{{ $book->name }}" class="form-control" placeholder="Имя">
+                <strong>Название:</strong>
+                <input type="text" name="name" value="{{ $book ? $book->name : '' }}" class="form-control" placeholder="Имя">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Год издания:</strong>
-                <input type="text" name="year" value="{{ $book->year }}" class="form-control" placeholder="Год издания">
+                <input type="text" name="year" value="{{ $book ? $book->year : '' }}" class="form-control" placeholder="Год издания">
             </div>
         </div>
 
@@ -40,7 +42,7 @@
 
                     @foreach ($authors as $key => $value)
                         <option value="{{ $key }}"
-                            @if ($book->author_id == $key)
+                            @if (!!$book && $book->author_id == $key)
                                 selected
                             @endif
                         >{{ $value }}</option>

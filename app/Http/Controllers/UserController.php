@@ -32,7 +32,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('users.edit')
+             ->with('user', false)
+             ->with('action', route('users.store'))
+             ->with('title', 'Добавить нового автора');
     }
 
     /**
@@ -78,7 +81,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user'))
+             ->with('action', route('users.update', $user->id))
+             ->with('title', 'Редактировать автора');
     }
 
     /**

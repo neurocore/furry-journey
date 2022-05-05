@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="float-left">
-            <h2>Редактировать жанр</h2>
+            <h2>{{ $title }}</h2>
         </div>
         <div class="float-right">
             <a class="btn btn-primary" href="{{ route('genres.index') }}">Назад</a>
@@ -12,21 +12,23 @@
     </div>
 </div>
 
-@include('layouts.alert')
+@include('layouts.errors')
 
-<form action="{{ route('genres.update', $genre->id) }}" method="POST">
+<form action="{{ $action }}" method="POST">
     @csrf
-    @method('PUT')
+    @if (!!$genre) 
+        @method('PUT')
+    @endif
 
-     <div class="row">
+    <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Имя:</strong>
-                <input type="text" name="name" value="{{ $genre->name }}" class="form-control" placeholder="Имя">
+                <strong>Название:</strong>
+                <input type="text" name="name" value="{{ $genre ? $genre->name : '' }}" class="form-control" placeholder="Имя">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-          <button type="submit" class="btn btn-primary">Подтвердить</button>
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
         </div>
     </div>
 
