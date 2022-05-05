@@ -16,31 +16,31 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// + 3a) User authorization request
+// 3a) User authorization request
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// + 3b) Getting books with author names
+// 3b) Getting books with author names
 
 Route::get('/books', function(Request $request) {
     return Book::with(['author'])->get();
 });
 
-// + 3c) Getting book by id
+// 3c) Getting book by id
 
 Route::get('/books/{id}', function($id) {
     return Book::findOrFail($id);
 });
 
-// + 3f) Getting authors list with books count
+// 3f) Getting authors list with books count
 
 Route::get('/authors', function() {
     return User::whereHas('roles', function($q) { $q->where('name', 'author'); })
              ->withCount(['books'])->get();
 });
 
-// + 3g) Getting author info with books list
+// 3g) Getting author info with books list
 
 Route::get('/authors/{id}', function($id) {
     $user = User::findOrFail($id);
@@ -53,7 +53,7 @@ Route::get('/authors/{id}', function($id) {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    // + 3h) Updating author info
+    // 3h) Updating author info
 
     Route::put('/authors/{id}', function(Request $request, $id) {
         $user = User::findOrFail($id);
@@ -62,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $user;
     });
 
-    // + 3d) Updating book by id
+    // 3d) Updating book by id
 
     Route::put('/books/{id}', function(Request $request, $id) {
         $book = Book::findOrFail($id);
@@ -71,7 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $book;
     });
 
-    // + 3e) Deleting book by id
+    // 3e) Deleting book by id
 
     Route::delete('/books/{id}', function($id) {
         Book::findOrFail($id)->delete();
