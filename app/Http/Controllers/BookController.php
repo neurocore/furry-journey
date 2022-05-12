@@ -33,9 +33,21 @@ class BookController extends Controller
     {
         $authors = User::whereHas('roles', function($q) { $q->where('name', 'author'); })
                 ->get()->pluck('name', 'id');
-        $genres = Genre::get()->pluck('name', 'id');
-        return view('books.create', compact('authors'), compact('genres'))
+        $genres = Genre::get()
+               ->pluck('name', 'id')
+               ->map(function ($item, $key) {
+                    return [
+                        'name' => $item,
+                        'checked' => false,
+                    ];
+                }
+        );
+
+
+        return view('books.edit')
              ->with('book', false)
+             ->with(compact('genres'))
+             ->with(compact('authors'))
              ->with('action', route('books.store'))
              ->with('title', 'Добавить новую книгу');
     }
