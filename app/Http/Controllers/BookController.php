@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Genre;
 use App\User;
+use App\Http\Requests\BookRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -55,30 +56,17 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\BookRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'year' => ['required', 'numeric'],
-            'author_id' => ['required'],
-        ]);
-
-        $user = User::find($request->input('author_id'));
-        if ($user === null)                    return $this->failure('Пользователя не существует!');
-        if ($user->hasRole('author') === null) return $this->failure('Пользователь не является автором!');
-
-        $genre_ids = $request->input('genre_ids');
-        foreach ($genre_ids as $genre_id)
-            if (Genre::find($genre_id) === null)
-                return $this->failure('Такого жанра не существует!');
+        $validated = $request->validated();
 
         $book = Book::Create($request->all());
 
         $book->genres()->detach();
-        $book->genres()->attach($genre_ids);
+        $book->genres()->attach($request->input('genre_ids'));
      
         return $this->success('Книга успешно добавлена');
     }
@@ -115,7 +103,8 @@ class BookController extends Controller
                         'name' => $item,
                         'checked' => isset($book_genres[$key]),
                     ];
-        });
+                }
+        );
 
         return view('books.edit')
              ->with(compact('book'))
@@ -128,31 +117,18 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\BookRequest  $request
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
-        $request->validate([
-            'name' => 'required',
-            'year' => 'required',
-            'author_id' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $user = User::find($request->input('author_id'));
-        if ($user === null)                    return $this->failure('Пользователя не существует!');
-        if ($user->hasRole('author') === null) return $this->failure('Пользователь не является автором!');
-
-        $genre_ids = $request->input('genre_ids');
-        foreach ($genre_ids as $genre_id)
-            if (Genre::find($genre_id) === null)
-                return $this->failure('Такого жанра не существует!');
-    
         $book->update($request->all());
 
         $book->genres()->detach();
-        $book->genres()->attach($genre_id);
+        $book->genres()->attach($request->input('genre_ids'));
     
         return $this->success('Книга успешно обновлена');
     }
